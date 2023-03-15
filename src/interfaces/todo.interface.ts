@@ -19,6 +19,7 @@ export type TodoItemProps = {
     todo: Todo
     updateTodo: ({id}: updateTodoFuncProps) => void
     removeTodo: ({id}: deleteTodoFuncProps) => void
+    todoRef: (element?: HTMLElement | null | undefined) => void
 }
 
 export type TodoCreateProps = {
@@ -39,8 +40,13 @@ export type deleteTodoFuncProps = {
 export type changeFilterFuncProps = {
     filter: FilterOptions
 }
-export type handleClickRoogleThemeProps = {
+export type handleClickToogleThemeFuncProps = {
     theme: boolean
+}
+export type sortedTodosFuncProps = {
+    list: Todo[];
+    startIndex: number
+    endIndex: number
 }
 
 export type Todo = {

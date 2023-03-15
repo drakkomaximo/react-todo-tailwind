@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { handleClickRoogleThemeProps } from "../../interfaces/todo.interface";
+import { handleClickToogleThemeFuncProps } from "../../interfaces/todo.interface";
 import IconMoon from "../icons/IconMoon";
 import IconSun from "../icons/IconSun";
 import { initialDarkMode } from "./constants";
@@ -10,7 +10,7 @@ const TodoHeader: FC = () => {
     const toogleTheme = () =>{
         setDarkMode(!darkMode)
     }
-    const handleClickRoogleTheme = ({theme}: handleClickRoogleThemeProps) => {
+    const handleClickRoogleTheme = ({theme}: handleClickToogleThemeFuncProps) => {
         if(theme){
             document.documentElement.classList.add("dark")
             localStorage.setItem('theme', 'dark')

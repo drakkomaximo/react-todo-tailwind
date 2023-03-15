@@ -1,3 +1,4 @@
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { FC, useEffect, useState } from "react";
 import TodoHeader from "../TodoHeader";
 import TodoComputed from "../TodoComputed";
@@ -13,11 +14,13 @@ import {
     FilterOptions,
     changeFilterFuncProps,
 } from "../../interfaces/todo.interface";
-import { initialStateTodos } from "./constants";
+import { initialStateTodos, sortedTodos } from "./constants";
 
 const TodoMain: FC = () => {
     const [todos, setTodos] = useState<Todo[]>(initialStateTodos());
     const [filter, setFilter] = useState<FilterOptions>("all");
+
+    const computedItemsLeft = todos.filter((todo) => !todo.completed).length;
 
     const createTodo = ({ title }: createTodoFuncProps) => {
         const newTodo = {
@@ -39,8 +42,6 @@ const TodoMain: FC = () => {
     const removeTodo = ({ id }: deleteTodoFuncProps) => {
         setTodos(todos.filter((todo) => todo.id !== id));
     };
-
-    const computedItemsLeft = todos.filter((todo) => !todo.completed).length;
 
     const clearCompleted = () => {
         setTodos(todos.filter((todo) => !todo.completed));
@@ -64,6 +65,23 @@ const TodoMain: FC = () => {
         }
     };
 
+    const handleDragEnd = (result: DropResult) => {
+        const { destination, source } = result;
+        if (!destination) return;
+        if (
+            source.index === destination.index &&
+            source.droppableId === destination.droppableId
+        )
+            return;
+        setTodos((prevTodos) =>
+            sortedTodos({
+                list: prevTodos,
+                endIndex: destination.index,
+                startIndex: source.index,
+            })
+        );
+    };
+
     useEffect(() => {
         localStorage.setItem("todos", JSON.stringify(todos));
     }, [todos]);
@@ -73,11 +91,13 @@ const TodoMain: FC = () => {
             <TodoHeader />
             <main className="container mx-auto mt-8 px-4 md:max-w-xl">
                 <TodoCreate createTodo={createTodo} />
-                <TodoList
-                    todos={filteredTodos()}
-                    updateTodo={updateTodo}
-                    removeTodo={removeTodo}
-                />
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <TodoList
+                        todos={filteredTodos()}
+                        updateTodo={updateTodo}
+                        removeTodo={removeTodo}
+                    />
+                </DragDropContext>
                 <TodoComputed
                     filterOption={filter}
                     computedItemsLeft={computedItemsLeft}
