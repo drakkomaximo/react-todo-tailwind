@@ -7,6 +7,7 @@ export type TodoListProps = {
 export type TodoComputedProps = {
     computedItemsLeft: number
     clearCompleted: () => void
+    filterOption: FilterOptions
 } 
 
 export type TodoFilterProps = {
@@ -38,6 +39,9 @@ export type deleteTodoFuncProps = {
 export type changeFilterFuncProps = {
     filter: FilterOptions
 }
+export type handleClickRoogleThemeProps = {
+    theme: boolean
+}
 
 export type Todo = {
     id: number,
@@ -46,3 +50,4 @@ export type Todo = {
 }
 
 export type FilterOptions = 'all' | 'active' | 'complete'
+export type DarkModeOptions = 'dark' | 'light'

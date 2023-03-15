@@ -1,0 +1,1 @@
+export const initialDarkMode: boolean = localStorage.getItem('theme') === 'dark'
